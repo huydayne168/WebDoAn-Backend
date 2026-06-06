@@ -1,0 +1,3 @@
+{
+  "note": "VNPay config was moved to BackEnd/server/.env. Use VNPAY_TMN_CODE, VNPAY_HASH_SECRET, VNPAY_URL, VNPAY_API, VNPAY_RETURN_URL."
+}
