@@ -7,7 +7,7 @@ const app = express();
 
 // Export router
 
-const sanphamRoutes = require("../server/routes/sanphamRoute");
+const sanphamRoutes = require("./routes/sanphamRoute");
 const danhmucRoutes = require("./routes/danhmucRoute");
 const nhanvienRoutes = require("./routes/nhanvienRoute");
 const khachhangRoutes = require("./routes/khachhangRoute");

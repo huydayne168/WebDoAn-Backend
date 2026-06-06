@@ -1,4 +1,4 @@
-const Category = require('../../server/model/danhmuc');
+const Category = require("../model/danhmuc");
 
 exports.getAllCategories = (req, res) => {
     Category.getAll((err, result) => {

@@ -1,4 +1,4 @@
-const Product = require("../../server/model/sanpham");
+const Product = require("../model/sanpham");
 const cloudinary = require("../config/cloudinaryConfig");
 const fs = require("fs");
 const path = require("path");
