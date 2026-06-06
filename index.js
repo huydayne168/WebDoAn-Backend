@@ -26,6 +26,10 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get(["/favicon.ico", "/favicon.png"], (req, res) => {
+    res.status(204).end();
+});
+
 app.get("/", (req, res) => {
     res.json({ message: "WebDoAn backend is running" });
 });
