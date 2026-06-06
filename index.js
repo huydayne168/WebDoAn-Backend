@@ -5,6 +5,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+const corsOptions = {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 // Export router
 
 const sanphamRoutes = require("./routes/sanphamRoute");
@@ -22,7 +28,8 @@ const voucherRoutes = require("./routes/voucherRoute");
 const bannerRoutes = require("./routes/bannerRoute");
 const danhgiaRoutes = require("./routes/danhgiaRoute");
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
