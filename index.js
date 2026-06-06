@@ -26,6 +26,10 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+    res.json({ message: "WebDoAn backend is running" });
+});
+
 // Sử dụng route
 app.use(sanphamRoutes);
 app.use(danhmucRoutes);
@@ -42,6 +46,11 @@ app.use(voucherRoutes);
 app.use(bannerRoutes);
 app.use(danhgiaRoutes);
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-});
+if (require.main === module) {
+    const port = process.env.PORT || 5000;
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
+
+module.exports = app;
