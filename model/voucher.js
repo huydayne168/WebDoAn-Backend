@@ -1,5 +1,10 @@
 const db = require("../config/config");
 
+const normalizeDiscountType = (discountType) => {
+    if (discountType === "amount") return "money";
+    return discountType;
+};
+
 const Voucher = {
     getAll: (callback) => {
         db.query(
@@ -36,7 +41,7 @@ const Voucher = {
         const sqlInsert = `
             INSERT INTO voucher (
                 coupon_name,
-                discount_type,
+                normalizeDiscountType(discount_type),
                 discount_amount,
                 remaining_count,
                 description,
@@ -90,7 +95,7 @@ const Voucher = {
             sqlUpdate,
             [
                 coupon_name,
-                discount_type,
+                normalizeDiscountType(discount_type),
                 discount_amount,
                 remaining_count,
                 description,

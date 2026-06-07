@@ -1,5 +1,23 @@
 const Voucher = require("../model/voucher");
 
+const normalizeVoucherPayload = (body) => ({
+    ...body,
+    discount_type: body.discount_type === "amount" ? "money" : body.discount_type,
+});
+
+const validateVoucherPayload = (body) => {
+    const payload = normalizeVoucherPayload(body);
+    const validTypes = ["percent", "money"];
+
+    if (!validTypes.includes(payload.discount_type)) {
+        return {
+            error: "Loại giảm giá không hợp lệ. Chỉ hỗ trợ percent hoặc money.",
+        };
+    }
+
+    return { payload };
+};
+
 exports.getAllVouchers = (req, res) => {
     Voucher.getAll((err, result) => {
         if (err) return res.status(500).send(err);
@@ -16,7 +34,10 @@ exports.getVoucherById = (req, res) => {
 };
 
 exports.createVoucher = (req, res) => {
-    Voucher.create(req.body, (err, result) => {
+    const { payload, error } = validateVoucherPayload(req.body);
+    if (error) return res.status(400).send(error);
+
+    Voucher.create(payload, (err, result) => {
         if (err) return res.status(500).send(err);
         res.send("Voucher created successfully");
     });
@@ -24,7 +45,10 @@ exports.createVoucher = (req, res) => {
 
 exports.updateVoucher = (req, res) => {
     const { id_voucher } = req.params;
-    Voucher.update(id_voucher, req.body, (err, result) => {
+    const { payload, error } = validateVoucherPayload(req.body);
+    if (error) return res.status(400).send(error);
+
+    Voucher.update(id_voucher, payload, (err, result) => {
         if (err) return res.status(500).send(err);
         res.send("Voucher updated successfully");
     });
