@@ -27,6 +27,21 @@ const getVnpayConfig = () => {
     };
 };
 
+const getRequestReturnUrl = (req, fallbackReturnUrl) => {
+    const requestedReturnUrl = req.body.returnUrl;
+    if (!requestedReturnUrl) return fallbackReturnUrl;
+
+    try {
+        const url = new URL(requestedReturnUrl);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            return fallbackReturnUrl;
+        }
+        return requestedReturnUrl;
+    } catch (error) {
+        return fallbackReturnUrl;
+    }
+};
+
 function sortObject(obj) {
     let sorted = {};
     let keys = Object.keys(obj).sort();
@@ -52,6 +67,7 @@ exports.generatePaymentUrl = (req) => {
                    (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
     const { tmnCode, hashSecret, paymentUrl, returnUrl } = getVnpayConfig();
+    const requestReturnUrl = getRequestReturnUrl(req, returnUrl);
 
     let vnp_Params = {
         'vnp_Version': '2.1.0',
@@ -63,7 +79,7 @@ exports.generatePaymentUrl = (req) => {
         'vnp_OrderInfo': 'Thanh toan cho ma GD:' + orderId,
         'vnp_OrderType': 'other',
         'vnp_Amount': amount * 100,
-        'vnp_ReturnUrl': returnUrl,
+        'vnp_ReturnUrl': requestReturnUrl,
         'vnp_IpAddr': ipAddr,
         'vnp_CreateDate': createDate,
         'vnp_BankCode': 'VNBANK'
