@@ -7,12 +7,7 @@ const getVnpayConfig = () => {
     const hashSecret = process.env.VNPAY_HASH_SECRET;
     const paymentUrl = process.env.VNPAY_URL || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
     const clientUrl = process.env.CLIENT_URL || 'https://web-do-an-client.vercel.app';
-    const configuredReturnUrl = process.env.VNPAY_RETURN_URL;
-    const liveReturnUrl = 'https://web-do-an-client.vercel.app/vnpay-return';
-    const returnUrl =
-        configuredReturnUrl && !configuredReturnUrl.includes('localhost')
-            ? configuredReturnUrl
-            : liveReturnUrl;
+    const returnUrl = 'https://web-do-an-client.vercel.app/vnpay-return';
     const apiUrl = process.env.VNPAY_API || 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction';
 
     const hasPlaceholderValue =
@@ -83,7 +78,10 @@ exports.generatePaymentUrl = (req) => {
 
     vnp_Params['vnp_SecureHash'] = signed;
 
-    return paymentUrl + '?' + querystring.stringify(vnp_Params, { encode: false });
+    return {
+        paymentUrl: paymentUrl + '?' + querystring.stringify(vnp_Params, { encode: false }),
+        returnUrl,
+    };
 };
 
 exports.verifyReturnUrl = (params) => {

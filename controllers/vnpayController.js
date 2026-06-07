@@ -3,8 +3,8 @@ const Order = require('../model/dathang');
 
 exports.createPaymentUrl = (req, res) => {
     try {
-        const paymentUrl = vnpayService.generatePaymentUrl(req);
-        return res.status(200).json({ url: paymentUrl }); // Phải có dòng này
+        const { paymentUrl, returnUrl } = vnpayService.generatePaymentUrl(req);
+        return res.status(200).json({ url: paymentUrl, returnUrl });
     } catch (error) {
         console.error("Lỗi tạo URL thanh toán:", error);
         return res.status(500).json({ error: "Lỗi tạo URL thanh toán" });
