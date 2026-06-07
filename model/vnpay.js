@@ -6,8 +6,8 @@ const getVnpayConfig = () => {
     const tmnCode = process.env.VNPAY_TMN_CODE;
     const hashSecret = process.env.VNPAY_HASH_SECRET;
     const paymentUrl = process.env.VNPAY_URL || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-    const returnUrl = process.env.VNPAY_RETURN_URL || `${clientUrl}/vnpay-return`;
+    const clientUrl = process.env.CLIENT_URL || 'https://web-do-an-client.vercel.app';
+    const returnUrl = process.env.VNPAY_RETURN_URL || 'https://web-do-an-client.vercel.app/vnpay-return';
     const apiUrl = process.env.VNPAY_API || 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction';
 
     const hasPlaceholderValue =
