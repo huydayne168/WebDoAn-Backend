@@ -3,7 +3,11 @@ const Order = require('../model/dathang');
 
 exports.createPaymentUrl = (req, res) => {
     try {
-        const { paymentUrl, returnUrl } = vnpayService.generatePaymentUrl(req);
+        const forcedReturnUrl = "https://web-do-an-client.vercel.app/vnpay-return";
+        const { paymentUrl, returnUrl } = vnpayService.generatePaymentUrl(
+            req,
+            forcedReturnUrl,
+        );
         return res.status(200).json({ url: paymentUrl, returnUrl });
     } catch (error) {
         console.error("Lỗi tạo URL thanh toán:", error);

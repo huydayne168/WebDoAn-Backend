@@ -36,7 +36,7 @@ function sortObject(obj) {
     return sorted;
 }
 
-exports.generatePaymentUrl = (req) => {
+exports.generatePaymentUrl = (req, forcedReturnUrl) => {
     process.env.TZ = 'Asia/Ho_Chi_Minh';
 
     const date = new Date();
@@ -52,7 +52,8 @@ exports.generatePaymentUrl = (req) => {
                    (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
     const { tmnCode, hashSecret, paymentUrl, returnUrl } = getVnpayConfig();
-    console.log("VNPay return URL:", returnUrl);
+    const finalReturnUrl = forcedReturnUrl || returnUrl;
+    console.log("VNPay return URL:", finalReturnUrl);
 
     let vnp_Params = {
         'vnp_Version': '2.1.0',
@@ -64,7 +65,7 @@ exports.generatePaymentUrl = (req) => {
         'vnp_OrderInfo': 'Thanh toan cho ma GD:' + orderId,
         'vnp_OrderType': 'other',
         'vnp_Amount': amount * 100,
-        'vnp_ReturnUrl': returnUrl,
+        'vnp_ReturnUrl': finalReturnUrl,
         'vnp_IpAddr': ipAddr,
         'vnp_CreateDate': createDate,
         'vnp_BankCode': 'VNBANK'
@@ -80,7 +81,7 @@ exports.generatePaymentUrl = (req) => {
 
     return {
         paymentUrl: paymentUrl + '?' + querystring.stringify(vnp_Params, { encode: false }),
-        returnUrl,
+        returnUrl: finalReturnUrl,
     };
 };
 
